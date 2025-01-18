@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "electronics-store"
+version = "0.1.0"
+description = ""
+authors = ["Maxim"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.5"
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "^8.0.0"}
+pillow = "^11.1.0"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
