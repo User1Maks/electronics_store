@@ -4,6 +4,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Contact(models.Model):
     """Модель контакта."""
+    supplier = models.OneToOneField(Supplier, on_delete=models.CASCADE,
+                                    verbose_name='Поставщик',
+                                    related_name='contacts')
     email = models.EmailField(unique=True, verbose_name='Email',
                               help_text='Укажите email')
     country = models.CharField(max_length=100,
