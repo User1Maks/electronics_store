@@ -1,9 +1,9 @@
 from django.urls import path
 
 from suppliers.apps import SuppliersConfig
-from suppliers.views import (SupplierCreateAPIView, SupplierDestroyAPIView,
-                             SupplierListAPIView, SupplierRetrieveAPIView,
-                             SupplierUpdateAPIView)
+from suppliers.views import (AddProductView, SupplierCreateAPIView,
+                             SupplierDestroyAPIView, SupplierListAPIView,
+                             SupplierRetrieveAPIView, SupplierUpdateAPIView)
 
 app_name = SuppliersConfig.name
 
@@ -16,5 +16,7 @@ urlpatterns = [
          name='supplier_update'),
     path('delete/<int:pk>/', SupplierDestroyAPIView.as_view(),
          name='supplier_delete'),
+
+    path('add-product/', AddProductView.as_view(), name='add_product')
 
 ]

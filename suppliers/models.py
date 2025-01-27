@@ -13,26 +13,23 @@ class Supplier(models.Model):
     network_name = models.CharField(max_length=200,
                                     verbose_name='Название поставщика',
                                     help_text='Введите название поставщика')
-    client = models.ForeignKey(
-        'suppliers.Supplier',
+    supplier = models.ForeignKey(
+        'self',
         **NULLABLE,
         verbose_name='Поставщик',
-        help_text='Поставщик, который закупил товар',
+        help_text='Поставщик, который закупает товар у другого поставщика',
         on_delete=models.SET_NULL,
         related_name='clients'
     )
-    hierarchy_level = models.IntegerField(choices=LEVEL_CHOICES,
-                                          verbose_name='Уровень иерархии',
-                                          help_text='Выберите поставщика')
-    network_level = models.IntegerField(
-        verbose_name='Уровень сети',
-        help_text='Определяет максимальный уровень цепочки поставщиков',
-        editable=False, default=0
+    hierarchy_level = models.IntegerField(
+        choices=LEVEL_CHOICES,
+        verbose_name='Уровень иерархии',
+        help_text='Уровень иерархии поставщика'
     )
-    debt = models.DecimalField(**NULLABLE,
-                               max_digits=12, decimal_places=2,
+
+    debt = models.DecimalField(max_digits=12, decimal_places=2,
                                verbose_name='Долг перед поставщиком',
-                               editable=False, default=0)
+                               editable=False, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name='Дата и время создания',
                                       editable=False)

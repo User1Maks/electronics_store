@@ -6,6 +6,6 @@ from contacts.views import ContactViewSet
 app_name = ContactsConfig.name
 
 router = DefaultRouter()
-router.register(r'contacts', ContactViewSet, basename='contacts')
+router.register(r'', ContactViewSet, basename='contacts')
 
 urlpatterns = router.urls
