@@ -32,6 +32,7 @@ Electronics Store - это веб-приложение с API - интерфей
 - Django Rest Framework (DRF) - для создания RESTful API
 - PostgreSQL - база данных
 - flake8 - для линтинга
+- pytest - для тестирования
 ___
 # Документация API
 Документация к проекту swagger: http://127.0.0.1:8000/swagger/
