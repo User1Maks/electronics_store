@@ -116,11 +116,12 @@ def supplier_individual_entrepreneur(supplier_retail_network):
 def product(user, supplier_plant):
     """Фикстура продукта."""
     product = Product.objects.create(
+        supplier=supplier_plant,
         title='test-product',
         model='testovay',
         price=53000.00
     )
-    product.supplier.set([supplier_plant])
+
     return product
 
 

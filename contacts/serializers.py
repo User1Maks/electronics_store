@@ -8,3 +8,12 @@ class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'
+
+
+class SupplierContactsSerializer(ModelSerializer):
+    """Сериализатор для контактов передаваемых вместе с данными о поставщике."""
+
+    class Meta:
+        model = Contact
+        fields = '__all__'
+        read_only_fields = ('supplier',)

@@ -1,13 +1,12 @@
-from rest_framework import generics, status
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import generics, status, views
 from rest_framework.response import Response
-from rest_framework import views
 
 from suppliers.models import Supplier
 from suppliers.paginators import SuppliersPermission
 from suppliers.serializers import AddProductSerializer, SupplierSerializer
 from suppliers.services import add_product_to_supplier
 from users.permissions import IsActive
-from django.core.exceptions import ObjectDoesNotExist
 
 
 class SupplierCreateAPIView(generics.CreateAPIView):
@@ -52,7 +51,7 @@ class AddProductView(views.APIView):
 
     def post(self, request):
         """
-        Обрабатывает POST-запрос для добавления продукта поставщику, а
+        Обрабатывает POST-запрос для добавления продукта поставщику-клиенту, а
         также обновляет его долг перед поставщиком у которого, закупил продукт.
         """
         serializer = AddProductSerializer(data=request.data)
@@ -65,11 +64,12 @@ class AddProductView(views.APIView):
             quantity = serializer.validated_data['quantity']
 
             try:
-                add_product_to_supplier(client_id, supplier_id, product_id,
-                                        quantity)
-                return Response({'message': 'Продукт успешно добавлен и долг'
-                                            'обновлен'},
-                                status=status.HTTP_200_OK)
+                new_product = add_product_to_supplier(client_id, supplier_id,
+                                                      product_id, quantity)
+                return Response({'message': 'Продукт успешно добавлен. Долг '
+                                            'перед поставщиком был обновлен',
+                                 'new_product_id': new_product.id
+                                 }, status=status.HTTP_200_OK)
             except ValueError as e:
                 return Response({'error': str(e)},
                                 status=status.HTTP_400_BAD_REQUEST)

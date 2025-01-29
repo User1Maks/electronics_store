@@ -4,8 +4,8 @@ from suppliers.models import Supplier
 
 def is_purchase_valid(client, supplier):
     """
-    Проверяет, что поставщик, который закупает товар, находится выше по
-    уровню иерархии или равен ему.
+    Проверяет, что поставщик-клиент, находится ниже по
+    уровню иерархии поставщика или равен ему.
     """
 
     if client.hierarchy_level >= supplier.hierarchy_level:
@@ -15,8 +15,8 @@ def is_purchase_valid(client, supplier):
 
 def add_product_to_supplier(client_id, supplier_id, product_id, quantity):
     """
-    Добавляет продукт поставщику, и увеличивает его долг перед поставщиком
-    у которого закупает товар.
+    Добавляет продукт поставщику-клиенту, и увеличивает его долг перед
+    поставщиком у которого закупает товар.
 
     :param client_id - id поставщика, который заказал продукт.
     :param supplier_id - id поставщика, у которого был заказан продукт.
@@ -31,12 +31,23 @@ def add_product_to_supplier(client_id, supplier_id, product_id, quantity):
     if not is_purchase_valid(client, supplier):
         raise ValueError(
             'Невозможно закупить товар у поставщика, так как его уровень'
-            'иерархии выше вашего.')
+            'иерархии ниже вашего.')
 
     if not supplier.products.filter(id=product_id).exists():
         raise ValueError(
             'У поставщика нет этого продукта.')
 
+    new_product = Product.objects.create(
+        title=product.title,
+        model=product.model,
+        price=product.price,
+        supplier=client,
+        description=product.description,
+        release_date=product.release_date
+    )
+    client.products.add(new_product)
+
     purchase_sum = product.price * quantity
     client.debt += purchase_sum
     client.save()
+    return new_product

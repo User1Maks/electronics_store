@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
 from contacts.models import Contact
-from contacts.serializers import ContactSerializer
+from contacts.serializers import SupplierContactsSerializer
 from suppliers.models import Supplier
 
 
 class SupplierSerializer(serializers.ModelSerializer):
     """Сериализатор для поставщика."""
-    contacts = ContactSerializer(required=False)
+    contacts = SupplierContactsSerializer(required=False)
 
     class Meta:
         model = Supplier
@@ -17,40 +17,15 @@ class SupplierSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Валидация данных модели Supplier."""
-        hierarchy_level = data.get('hierarchy_level')
         supplier = data.get('supplier')
 
-        if hierarchy_level == 0 and supplier is not None:
-            raise serializers.ValidationError(
-                'Ваш уровень иерархии 0 (Завод), вы не можете '
-                'указать поставщика.'
-            )
-
-        if hierarchy_level in [1, 2]:
-
-            if supplier is None:
-                raise serializers.ValidationError(
-                    'Укажите поставщика.'
-                )
-
-            if hierarchy_level == 1 and supplier.hierarchy_level != 0:
-                raise serializers.ValidationError(
-                    'Розничная сеть должна ссылаться на завод.'
-                )
-
-            if (hierarchy_level == 2 and supplier.hierarchy_level
-                    not in [0, 1]):
-                raise serializers.ValidationError(
-                    'ИП должен ссылаться на завод или розничную сеть.'
-                )
-
-        if self.instance:
-            if 'hierarchy_level' in data:
-                raise serializers.ValidationError(
-                    'Обновление уровня иерархии запрещено, так как оно'
-                    'определенно вашим отношением к остальным элементам '
-                    'сети.'
-                )
+        # Логика для автоматического вычисления hierarchy_level
+        if supplier is None:
+            data['hierarchy_level'] = 0
+        elif supplier.hierarchy_level == 0:
+            data['hierarchy_level'] = 1
+        else:
+            data['hierarchy_level'] = 2
 
         return data
 
@@ -98,7 +73,3 @@ class AddProductSerializer(serializers.Serializer):
         required=True, min_value=1,
         help_text='Количество продукта.')
 
-    def post(self, request):
-        serializer = AddProductSerializer(data=request.data)
-        if serializer.is_valid():
-            print(f"Validated data: {serializer.validated_data}")

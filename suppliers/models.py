@@ -16,7 +16,7 @@ class Supplier(models.Model):
     supplier = models.ForeignKey(
         'self',
         **NULLABLE,
-        verbose_name='Поставщик',
+        verbose_name='Поставщик-клиент',
         help_text='Поставщик, который закупает товар у другого поставщика',
         on_delete=models.SET_NULL,
         related_name='client'
@@ -24,7 +24,9 @@ class Supplier(models.Model):
     hierarchy_level = models.IntegerField(
         choices=LEVEL_CHOICES,
         verbose_name='Уровень иерархии',
-        help_text='Уровень иерархии поставщика'
+        help_text='Уровень иерархии поставщика',
+        null=True,
+        editable=False
     )
 
     debt = models.DecimalField(max_digits=12, decimal_places=2,
