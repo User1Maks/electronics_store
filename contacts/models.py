@@ -14,7 +14,7 @@ class Contact(models.Model):
     country = models.CharField(max_length=100,
                                verbose_name='Страна',
                                help_text='Укажите страну')
-    citi = models.CharField(max_length=100, verbose_name='Город',
+    city = models.CharField(max_length=100, verbose_name='Город',
                             help_text='Укажите город')
     street = models.CharField(max_length=100, verbose_name='Улица',
                               help_text='Укажите название улицы')

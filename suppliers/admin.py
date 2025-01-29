@@ -7,7 +7,7 @@ from suppliers.models import Supplier
 class SupplierAdmin(admin.ModelAdmin):
     list_display = ('id', 'network_name', 'supplier', 'hierarchy_level', 'debt',
                     'created_at',)
-    list_filter = ('hierarchy_level', 'contacts__citi', 'contacts__country',)
+    list_filter = ('hierarchy_level', 'contacts__city', 'contacts__country',)
     search_fields = ('network_name',)
     actions = ('clear_debt',)
 

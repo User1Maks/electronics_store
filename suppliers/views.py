@@ -18,7 +18,7 @@ class SupplierCreateAPIView(generics.CreateAPIView):
 
 class SupplierListAPIView(generics.ListAPIView):
     """Endpoint списка поставщиков."""
-    queryset = Supplier.objects.all()
+    queryset = Supplier.objects.all().order_by('-created_at')
     serializer_class = SupplierSerializer
     pagination_class = SuppliersPermission
     permission_classes = [IsActive]
@@ -50,7 +50,7 @@ class AddProductView(views.APIView):
     """
     permission_classes = [IsActive]
 
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Обрабатывает POST-запрос для добавления продукта поставщику, а
         также обновляет его долг перед поставщиком у которого, закупил продукт.

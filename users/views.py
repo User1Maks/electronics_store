@@ -22,7 +22,7 @@ class UserCreateAPIView(CreateAPIView):
 
 class UserListAPIView(ListAPIView):
     """Endpoint для просмотра списка пользователей."""
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('email')
     serializer_class = UserSerializer
 
 

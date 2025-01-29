@@ -20,7 +20,7 @@ class ProductCreateAPIView(generics.CreateAPIView):
 
 class ProductListAPIView(generics.ListAPIView):
     """Endpoint просмотра списка продуктов."""
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('price')
     serializer_class = ProductSerializer
     permission_classes = [IsActive]
     pagination_class = ProductPaginator

@@ -19,7 +19,7 @@ class Supplier(models.Model):
         verbose_name='Поставщик',
         help_text='Поставщик, который закупает товар у другого поставщика',
         on_delete=models.SET_NULL,
-        related_name='clients'
+        related_name='client'
     )
     hierarchy_level = models.IntegerField(
         choices=LEVEL_CHOICES,

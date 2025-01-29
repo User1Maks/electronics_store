@@ -8,5 +8,5 @@ from users.permissions import IsActive
 class ContactViewSet(viewsets.ModelViewSet):
     """ViewSet для контактов."""
     serializer_class = ContactSerializer
-    queryset = Contact.objects.all()
+    queryset = Contact.objects.all().order_by('supplier')
     permission_classes = [IsActive]
