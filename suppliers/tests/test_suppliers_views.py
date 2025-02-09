@@ -155,4 +155,6 @@ def test_add_products_to_supplier(auth_user, supplier_plant,
     expected_debt_increase = product.price * data['quantity']
 
     supplier_retail_network.refresh_from_db()
+    product.refresh_from_db()
     assert supplier_retail_network.debt == initial_debt + expected_debt_increase
+    assert supplier_retail_network in product.supplier.all()

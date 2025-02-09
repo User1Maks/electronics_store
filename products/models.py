@@ -6,11 +6,10 @@ from users.models import User
 
 class Product(models.Model):
     """Модель продукта."""
-    supplier = models.ForeignKey(Supplier, verbose_name='Поставщик',
-                                 help_text='Выберите поставщика',
-                                 related_name='products',
-                                 on_delete=models.CASCADE
-                                 )
+    supplier = models.ManyToManyField(Supplier, verbose_name='Поставщик',
+                                      help_text='Выберите поставщика',
+                                      related_name='products'
+                                      )
     title = models.CharField(max_length=255, verbose_name='Название продукта',
                              help_text='Введите название продукта')
     model = models.CharField(max_length=100, verbose_name='Модель продукта',
