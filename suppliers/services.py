@@ -37,17 +37,9 @@ def add_product_to_supplier(client_id, supplier_id, product_id, quantity):
         raise ValueError(
             'У поставщика нет этого продукта.')
 
-    new_product = Product.objects.create(
-        title=product.title,
-        model=product.model,
-        price=product.price,
-        supplier=client,
-        description=product.description,
-        release_date=product.release_date
-    )
-    client.products.add(new_product)
+    product.supplier.add(client)
 
     purchase_sum = product.price * quantity
     client.debt += purchase_sum
     client.save()
-    return new_product
+    return product
